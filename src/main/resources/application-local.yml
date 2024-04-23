@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/artvu
+    username: artvu
+    password: 1234
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
+
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: true
+
+  open-api:
+    secretKey: "9bc5a206710943769d657e163212035d"
+
+logging:
+  file:
+    path: /back-end/logfiles
+  logback:
+    rolling policy:
+      file-name-pattern: /log-backup/service.%d{yyyy-MM-dd}-%i.log
+      max-file-size: 10KB
+  pattern:
+    dateformat: Asia/Seoul

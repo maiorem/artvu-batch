@@ -1,0 +1,37 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mariadb://${DB_URL}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER_NAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: ${DDL_AUTO}
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    defer-datasource-initialization: true
+
+
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: true
+
+  open-api:
+    secretKey: "9bc5a206710943769d657e163212035d"
+
+logging:
+  file:
+    name: service.log
+  logback:
+    rolling policy:
+      file-name-pattern: service.%d{yyyy-MM-dd}-%i.log
+      max-file-size: 10MB
+  pattern:
+    dateformat: Asia/Seoul

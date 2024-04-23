@@ -1,0 +1,37 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://100.100.30.52:23306/dartvu
+    username: appartvu
+    password: System01!!
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    defer-datasource-initialization: true
+
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: true
+
+  open-api:
+    secretKey: "9bc5a206710943769d657e163212035d"
+
+logging:
+  file:
+    name: service.log
+  logback:
+    rolling policy:
+      file-name-pattern: /log-backup/service.%d{yyyy-MM-dd}-%i.log
+      max-file-size: 10MB
+  pattern:
+    dateformat: Asia/Seoul

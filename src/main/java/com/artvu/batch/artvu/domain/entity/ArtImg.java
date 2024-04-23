@@ -21,6 +21,7 @@ public class ArtImg  extends BaseEntity {
 
     @Column(length = 50, name = "CLS_CODE")
     @Comment("용도구분(포스터,소개,좌석)")
+    @Enumerated(EnumType.STRING)
     private ClsCode clsCode;
 
     @Column(length = 2000, name = "IMG_URL")

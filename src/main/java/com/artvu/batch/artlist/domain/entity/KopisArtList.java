@@ -11,7 +11,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
-@Getter
+@Getter @Setter
 @Entity
 @Table(name = "TB_KOPIS_ART_LIST")
 @Comment("[KOPIS] 공연목록")

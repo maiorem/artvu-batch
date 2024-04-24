@@ -3,6 +3,7 @@ package com.artvu.batch.artdetail.application;
 import com.artvu.batch.artdetail.presentation.KopisArtDetailResponse;
 import com.artvu.batch.common.constants.Constants;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -62,13 +63,12 @@ public class ArtDetailItemReader implements ItemReader<List<KopisArtDetailRespon
                     .log();
             String xmlResult = response.block();
             JSONObject jsonResult = XML.toJSONObject(xmlResult);
-            KopisArtDetailResponse result = gson.fromJson(jsonResult.toString(), KopisArtDetailResponse.class);
+            KopisArtDetailResponse result = gson.fromJson(jsonResult.toString(), TypeToken.getParameterized(KopisArtDetailResponse.class).getType());
             detailList.add(result);
         }
 
         count++;
         log.info("art DETAIL READER ============================================== ");
-        log.info("art detail info ::" + detailList);
 
         return count > 1 ? null : detailList;
     }

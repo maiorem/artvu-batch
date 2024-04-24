@@ -9,6 +9,7 @@ import org.springframework.batch.item.ItemProcessor;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -21,15 +22,27 @@ public class ArtDetailItemProcessor  implements ItemProcessor<List<KopisArtDetai
         List<KopisArtDetail> detailList = new ArrayList<>();
         List<KopisArtIntroImgList> imgListList = new ArrayList<>();
         for (KopisArtDetailResponse response : items) {
-            List<KopisArtDetailResponse.Dbs.Db.Styurls> urls = response.getDbs().getDb().getStyurls();
 
-            for (KopisArtDetailResponse.Dbs.Db.Styurls url : urls) {
+            List<?> urls = new ArrayList<>();
+
+            Object ob = response.getDbs().getDb().getStyurls().getStyurl();
+            if (ob.getClass().isArray()) {
+                urls = Arrays.asList((Object[]) ob);
+                for (Object url : urls) {
+                    imgListList.stream().map(img -> KopisArtIntroImgList.builder()
+                            .artId(response.getDbs().getDb().getMt20id())
+                            .introductImgUrl((String) url)
+                            .build()
+                    );
+                }
+            } else {
                 imgListList.stream().map(img -> KopisArtIntroImgList.builder()
                         .artId(response.getDbs().getDb().getMt20id())
-                        .introductImgUrl(url.getStyurl())
+                        .introductImgUrl((String) ob)
                         .build()
                 );
             }
+
 
             detailList.stream().map(detail -> KopisArtDetail.builder()
                     .artId(response.getDbs().getDb().getMt20id())

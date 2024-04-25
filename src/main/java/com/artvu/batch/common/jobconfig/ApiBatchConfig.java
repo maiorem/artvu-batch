@@ -135,8 +135,8 @@
 //
 //    @Bean
 //    @StepScope
-//    public ArtDetailItemWriter<KopisArtDetail> detailItemWriter() {
-//        JpaItemWriter<KopisArtDetail> writer = new JpaItemWriter<>();
+//    public ArtDetailItemWriter<List<KopisArtDetail>> detailItemWriter() {
+//        JpaItemWriter<List<KopisArtDetail>> writer = new JpaItemWriter<>();
 //        writer.setEntityManagerFactory(entityManager);
 //        return new ArtDetailItemWriter<>(writer);
 //    }
@@ -156,8 +156,8 @@
 //
 //    @Bean
 //    @StepScope
-//    public ArtFacItemWriter<KopisArtDetail> facItemWriter() {
-//        JpaItemWriter<KopisFacDetail> writer = new JpaItemWriter<>();
+//    public ArtFacItemWriter<List<KopisFacDetail>> facItemWriter() {
+//        JpaItemWriter<List<KopisFacDetail>> writer = new JpaItemWriter<>();
 //        writer.setEntityManagerFactory(entityManager);
 //        return new ArtFacItemWriter<>(writer);
 //    }

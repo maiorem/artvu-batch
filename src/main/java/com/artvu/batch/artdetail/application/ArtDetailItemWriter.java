@@ -14,12 +14,12 @@ import java.util.List;
 @Slf4j
 public class ArtDetailItemWriter<T> extends JpaItemWriter<List<KopisArtDetail>> {
 
-    private final JpaItemWriter<KopisArtDetail> jpaItemWriter;
+    private final JpaItemWriter<List<KopisArtDetail>> jpaItemWriter;
 
     @Autowired
     private ArtListService artService;
 
-    public ArtDetailItemWriter(JpaItemWriter<KopisArtDetail> jpaItemWriter) {
+    public ArtDetailItemWriter(JpaItemWriter<List<KopisArtDetail>> jpaItemWriter) {
         this.jpaItemWriter = jpaItemWriter;
     }
 
@@ -28,18 +28,20 @@ public class ArtDetailItemWriter<T> extends JpaItemWriter<List<KopisArtDetail>> 
         log.info("art DETAIL WRITER ================================================");
 
         List<String> artIdList = artService.artIdList();
-
+        Chunk<List<KopisArtDetail>> collectList = new Chunk<>();
+        List<List<KopisArtDetail>> allList = new ArrayList<>();
         for(List<KopisArtDetail> list : items){
-            Chunk<KopisArtDetail> collect = new Chunk<>();
             List<KopisArtDetail> newList = new ArrayList<>();
             for (KopisArtDetail kopisArtDetail : list) {
                 if ( !artIdList.contains(kopisArtDetail.getArtId())) {
                     newList.add(kopisArtDetail);
                 }
-                collect.addAll(newList);
+                allList.add(newList);
             }
-            jpaItemWriter.write(collect);
+            collectList.addAll(allList);
         }
+
+        jpaItemWriter.write(collectList);
 
     }
 

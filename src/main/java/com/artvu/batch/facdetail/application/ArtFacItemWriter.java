@@ -15,12 +15,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArtFacItemWriter<T> extends JpaItemWriter<List<KopisFacDetail>> {
 
-    private JpaItemWriter<KopisFacDetail> jpaItemWriter;
+    private JpaItemWriter<List<KopisFacDetail>> jpaItemWriter;
 
     @Autowired
     private ArtDetailService artDetailService;
 
-    public ArtFacItemWriter(JpaItemWriter<KopisFacDetail> jpaItemWriter) {
+    public ArtFacItemWriter(JpaItemWriter<List<KopisFacDetail>> jpaItemWriter) {
         this.jpaItemWriter = jpaItemWriter;
     }
 
@@ -28,18 +28,20 @@ public class ArtFacItemWriter<T> extends JpaItemWriter<List<KopisFacDetail>> {
     public void write(Chunk<? extends List<KopisFacDetail>> items) {
         List<String> facIdList = artDetailService.artFacIdList();
 
-
+        List<List<KopisFacDetail>> allList = new ArrayList<>();
+        Chunk<List<KopisFacDetail>> collect = new Chunk<>();
         for(List<KopisFacDetail> list : items){
-            Chunk<KopisFacDetail> collect = new Chunk<>();
+
             List<KopisFacDetail> newList = new ArrayList<>();
             for (KopisFacDetail facDetail : list) {
                 if ( !facIdList.contains(facDetail.getArtFacId())) {
                     newList.add(facDetail);
                 }
-                collect.addAll(newList);
+                allList.add(newList);
             }
-            jpaItemWriter.write(collect);
+           collect.addAll(allList);
         }
+        jpaItemWriter.write(collect);
 
     }
 

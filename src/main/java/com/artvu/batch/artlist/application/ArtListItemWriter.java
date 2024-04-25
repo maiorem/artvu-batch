@@ -1,12 +1,13 @@
 package com.artvu.batch.artlist.application;
 
 import com.artvu.batch.artlist.domain.entity.KopisArtList;
-import com.artvu.batch.artlist.infrastructure.repository.KopisArtListApiRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -15,12 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor
 public class ArtListItemWriter<T> extends JpaItemWriter<List<com.artvu.batch.artlist.domain.entity.KopisArtList>> {
 
-    private final JpaItemWriter<com.artvu.batch.artlist.domain.entity.KopisArtList> jpaItemWriter;
+    private JpaItemWriter<com.artvu.batch.artlist.domain.entity.KopisArtList> jpaItemWriter;
 
     @Autowired
-    private KopisArtListApiRepository repository;
+    private ArtListService artService;
 
     public ArtListItemWriter(JpaItemWriter<com.artvu.batch.artlist.domain.entity.KopisArtList> jpaItemWriter) {
         this.jpaItemWriter = jpaItemWriter;
@@ -34,11 +36,7 @@ public class ArtListItemWriter<T> extends JpaItemWriter<List<com.artvu.batch.art
         LocalDate today = LocalDate.now(ZoneId.of("Asia/Seoul"));
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
-        List<com.artvu.batch.artlist.domain.entity.KopisArtList> dbAll = repository.findAll();
-        List<String> artIdList = new ArrayList<>();
-        for (com.artvu.batch.artlist.domain.entity.KopisArtList kopisArtList : dbAll) {
-            artIdList.add(kopisArtList.getArtId());
-        }
+        List<String> artIdList = artService.artIdList();
 
         Chunk<com.artvu.batch.artlist.domain.entity.KopisArtList> collect = new Chunk<>();
         for(List<com.artvu.batch.artlist.domain.entity.KopisArtList> list : items){
@@ -62,6 +60,6 @@ public class ArtListItemWriter<T> extends JpaItemWriter<List<com.artvu.batch.art
 
     @Override
     public void afterPropertiesSet()  {
-
+        Assert.notNull(jpaItemWriter, "An entity manager is required");
     }
 }

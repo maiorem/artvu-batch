@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.List;
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,7 +17,7 @@ public class KopisFacDetailResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     @ToString
-    public class Dbs {
+    public static class Dbs {
 
         private Db db;
 
@@ -33,13 +31,13 @@ public class KopisFacDetailResponse {
 
             private String fcltynm;//공연시설명
 
-            private String opende;//개관연도
+            private int opende;//개관연도
 
             private String fcltychartr;//시설특성
 
-            private String seatscale;//좌석수
+            private int seatscale;//좌석수
 
-            private String mt13cnt;//공연장 수
+            private int mt13cnt;//공연장 수
 
             private String telno;//전화번호
 
@@ -47,9 +45,9 @@ public class KopisFacDetailResponse {
 
             private String adres;//주소
 
-            private String la;//위도
+            private Float la;//위도
 
-            private String lo;//경도
+            private Float lo;//경도
 
             private String restaurant;//레스토랑유무
 

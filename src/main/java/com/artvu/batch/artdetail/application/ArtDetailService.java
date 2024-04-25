@@ -1,7 +1,7 @@
 package com.artvu.batch.artdetail.application;
 
-import com.artvu.batch.artlist.domain.entity.KopisArtList;
-import com.artvu.batch.artlist.infrastructure.repository.KopisArtListApiRepository;
+import com.artvu.batch.artdetail.domain.entity.KopisArtDetail;
+import com.artvu.batch.artdetail.infrastructure.repository.KopisArtDetailApiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +12,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArtDetailService {
 
-    private final KopisArtListApiRepository listApiRepository;
+    private final KopisArtDetailApiRepository detailApiRepository;
 
-    public List<String> artIdList() {
-
-        List<KopisArtList> artList = listApiRepository.findAll();
-        List<String> kopisArtIdList = new ArrayList<>();
-        for (KopisArtList kopisArt : artList) {
-            kopisArtIdList.add(kopisArt.getArtId());
+    public List<String> artFacIdList() {
+        List<KopisArtDetail> list = detailApiRepository.findAll();
+        List<String> facIdList = new ArrayList<>();
+        for (KopisArtDetail kopisArtDetail : list) {
+            facIdList.add(kopisArtDetail.getArtFacId());
         }
-        return kopisArtIdList;
+        return facIdList;
     }
 }

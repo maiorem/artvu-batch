@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class Schedule {
+public class Scheduler {
 
     private final JobLauncher jobLauncher;
 

@@ -86,7 +86,7 @@ public class KopisFacDetail extends BaseRegDate {
 
     @Column(length = 1, name = "STORE24_YN")
     @Comment("편의점여부")
-    private String Store24Yn;
+    private String store24Yn;
 
     @Column(length = 1, name = "PLAYROOM_YN")
     @Comment("놀이방여부")
@@ -109,7 +109,7 @@ public class KopisFacDetail extends BaseRegDate {
     private String disPersonRunwayYn;
 
     @Column(length = 1, name = "DIS_PERSON_ELEVATOR_YN")
-    @Comment("애시설_엘리베이터_여부")
+    @Comment("장애시설_엘리베이터_여부")
     private String disPersonElevatorYn;
 
     @Column(length = 1, name = "PARKING_YN")

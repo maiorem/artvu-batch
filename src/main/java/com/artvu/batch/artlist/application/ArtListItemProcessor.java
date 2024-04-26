@@ -17,8 +17,6 @@ public class ArtListItemProcessor implements ItemProcessor<KopisArtListResponse,
 
         log.info("art LIST PROCESSOR ============================================== ");
 
-        LocalDateTime regdt = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-
         return item.getDbs().getDb().stream().map(data -> KopisArtList.builder()
                 .artId(data.getMt20id())
                 .artNm(data.getPrfnm())
@@ -30,7 +28,6 @@ public class ArtListItemProcessor implements ItemProcessor<KopisArtListResponse,
                 .genreNm(data.getGenrenm())
                 .status(data.getPrfstate())
                 .openrunYn(data.getOpenrun())
-                .regDt(regdt)
                 .build()
         ).toList();
     }

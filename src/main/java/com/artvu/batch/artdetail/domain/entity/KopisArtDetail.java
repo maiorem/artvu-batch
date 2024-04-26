@@ -1,29 +1,18 @@
 package com.artvu.batch.artdetail.domain.entity;
 
-import com.artvu.batch.artlist.domain.entity.KopisArtIntroImgList;
 import com.artvu.batch.common.entity.BaseRegDate;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 @Getter
+@ToString
 @Entity
 @Table(name = "TB_KOPIS_ART_DETAIL")
 @Comment("[KOPIS] 공연상세내용")
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-@IdClass(ArtDetailId.class)
 public class KopisArtDetail extends BaseRegDate {
 
     @Id
@@ -31,14 +20,6 @@ public class KopisArtDetail extends BaseRegDate {
     @Comment("공연ID")
     private String artId;
 
-    @Id
-    @Column(name = "REG_DT")
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @Comment("수집일시")
-    private LocalDateTime regDt;
-
-    @Id
     @Column(length = 20, name = "ART_FAC_ID")
     @Comment("공연시설ID")
     private String artFacId;
@@ -55,7 +36,7 @@ public class KopisArtDetail extends BaseRegDate {
     @Comment("공연종료일")
     private String artEndDt;
 
-    @Column(length = 45, name = "ART_FAC_NM")
+    @Column(length = 200, name = "ART_FAC_NM")
     @Comment("공연시설명")
     private String artFacNm;
 
@@ -91,9 +72,9 @@ public class KopisArtDetail extends BaseRegDate {
     @Comment("주관")
     private String organizerNm;
 
-    @Column(name = "PRICE")
+    @Column(length = 200, name = "PRICE")
     @Comment("티켓가격")
-    private int price;
+    private String price;
 
     @Column(length = 500, name = "POSTER_IMG_URL")
     @Comment("포스터이미지경로")
@@ -147,7 +128,5 @@ public class KopisArtDetail extends BaseRegDate {
     @Comment("공연시각")
     private String artTime;
 
-    @OneToMany(mappedBy = "kopisArtDetail")
-    private List<KopisArtIntroImgList> introImgListList;
 
 }

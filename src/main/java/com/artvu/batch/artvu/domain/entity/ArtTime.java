@@ -33,7 +33,7 @@ public class ArtTime {
     @Comment("런타임")
     private String runTime;
 
-    @Column(length = 100, name = "ART_TIME")
+    @Column(length = 100, name = "ART_OPEN_TIME")
     @Comment("공연일시")
     private String artTime;
 

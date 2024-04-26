@@ -19,7 +19,7 @@ public class KopisArtDetailResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     @ToString
-    public class Dbs {
+    public static class Dbs {
 
         private Db db;
 

@@ -17,20 +17,20 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-public class ArtListItemWriter<T> extends JpaItemWriter<List<com.artvu.batch.artlist.domain.entity.KopisArtList>> {
+public class ArtListItemWriter<T> extends JpaItemWriter<List<KopisArtList>> {
 
-    private JpaItemWriter<com.artvu.batch.artlist.domain.entity.KopisArtList> jpaItemWriter;
+    private JpaItemWriter<KopisArtList> jpaItemWriter;
 
     @Autowired
     private ArtListService artService;
 
-    public ArtListItemWriter(JpaItemWriter<com.artvu.batch.artlist.domain.entity.KopisArtList> jpaItemWriter) {
+    public ArtListItemWriter(JpaItemWriter<KopisArtList> jpaItemWriter) {
         this.jpaItemWriter = jpaItemWriter;
     }
 
     @Override
     @Transactional
-    public void write(Chunk<? extends List<com.artvu.batch.artlist.domain.entity.KopisArtList>> items) {
+    public void write(Chunk<? extends List<KopisArtList>> items) {
         log.info("art LIST WRITER ================================================");
 
         LocalDate today = LocalDate.now(ZoneId.of("Asia/Seoul"));
@@ -38,10 +38,10 @@ public class ArtListItemWriter<T> extends JpaItemWriter<List<com.artvu.batch.art
 
         List<String> artIdList = artService.artIdList();
 
-        Chunk<com.artvu.batch.artlist.domain.entity.KopisArtList> collect = new Chunk<>();
-        for(List<com.artvu.batch.artlist.domain.entity.KopisArtList> list : items){
+        Chunk<KopisArtList> collect = new Chunk<>();
+        for(List<KopisArtList> list : items){
             List<KopisArtList> newList = new ArrayList<>();
-            for (com.artvu.batch.artlist.domain.entity.KopisArtList kopisArtList : list) {
+            for (KopisArtList kopisArtList : list) {
                 if (!artIdList.contains(kopisArtList.getArtId())) {
                     newList.add(kopisArtList);
                 } else {
@@ -60,6 +60,6 @@ public class ArtListItemWriter<T> extends JpaItemWriter<List<com.artvu.batch.art
 
     @Override
     public void afterPropertiesSet()  {
-        Assert.notNull(jpaItemWriter, "An entity manager is required");
+        Assert.notNull(jpaItemWriter, "For art list, An entity manager is required");
     }
 }

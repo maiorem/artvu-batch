@@ -5,10 +5,7 @@ import com.artvu.batch.artdetail.presentation.KopisArtDetailResponse;
 import com.artvu.batch.artdetail.application.ArtDetailItemProcessor;
 import com.artvu.batch.artdetail.application.ArtDetailItemReader;
 import com.artvu.batch.artdetail.application.ArtDetailItemWriter;
-import com.artvu.batch.artlist.application.ArtListItemProcessor;
-import com.artvu.batch.artlist.application.ArtListItemReader;
-import com.artvu.batch.artlist.application.ArtListItemWriter;
-import com.artvu.batch.artlist.application.ArtListService;
+import com.artvu.batch.artlist.application.*;
 import com.artvu.batch.artlist.presentation.KopisArtListResponse;
 import com.artvu.batch.artdetail.domain.entity.KopisArtDetail;
 import com.artvu.batch.artlist.domain.entity.KopisArtList;
@@ -52,10 +49,11 @@ public class ApiBatchConfig {
     private final PlatformTransactionManager transactionManager;
 
     @Bean(name = "artReaderJob")
-    public Job artReaderJob(Step listStep, Step detailStep, Step theaterDataStep){
+    public Job artReaderJob(Step listStep, Step musicalListStep, Step detailStep, Step theaterDataStep){
 
         return new JobBuilder("artReaderJob", jobRepository)
                 .start(listStep)
+                .next(musicalListStep)
                 .next(detailStep)
                 .next(theaterDataStep)
                 .incrementer(new RunIdIncrementer())
@@ -73,6 +71,19 @@ public class ApiBatchConfig {
                 .allowStartIfComplete(true)
                 .build();
     }
+
+    @Bean
+    public Step musicalListStep() {
+        return new StepBuilder("musicalListStep", jobRepository)
+                .<KopisArtListResponse, List<KopisArtList>>chunk(200, transactionManager)
+                .reader(musicalListItemReader())
+                .processor(musicallistItemProcessor())
+                .writer(musicallistItemWriter())
+                .allowStartIfComplete(true)
+                .build();
+    }
+
+
 
     // Step 2 (detail)
     @Bean
@@ -115,6 +126,26 @@ public class ApiBatchConfig {
         writer.setEntityManagerFactory(entityManager);
         return new ArtListItemWriter<>(writer);
     }
+
+    // ==== musical ====
+
+    @Bean
+    public ArtMusicalListItemReader musicalListItemReader() {
+        return new ArtMusicalListItemReader();
+    }
+
+    @Bean
+    public ArtMusicalListItemProcessor musicallistItemProcessor() {
+        return new ArtMusicalListItemProcessor();
+    }
+
+    @Bean
+    public ArtMusicalListItemWriter<KopisArtList> musicallistItemWriter() {
+        JpaItemWriter<KopisArtList> writer = new JpaItemWriter<>();
+        writer.setEntityManagerFactory(entityManager);
+        return new ArtMusicalListItemWriter<>(writer);
+    }
+
 
     // ============ Step 2. Detail =================
     @Bean

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,21 +16,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArtFacItemWriter<T> extends JpaItemWriter<List<KopisFacDetail>> {
 
-    private JpaItemWriter<List<KopisFacDetail>> jpaItemWriter;
+    private JpaItemWriter<KopisFacDetail> jpaItemWriter;
 
     @Autowired
     private ArtDetailService artDetailService;
 
-    public ArtFacItemWriter(JpaItemWriter<List<KopisFacDetail>> jpaItemWriter) {
+    public ArtFacItemWriter(JpaItemWriter<KopisFacDetail> jpaItemWriter) {
         this.jpaItemWriter = jpaItemWriter;
     }
 
     @Override
     public void write(Chunk<? extends List<KopisFacDetail>> items) {
+
+        log.info("art facility Detail WRITER ================================================");
+
         List<String> facIdList = artDetailService.artFacIdList();
 
-        List<List<KopisFacDetail>> allList = new ArrayList<>();
-        Chunk<List<KopisFacDetail>> collect = new Chunk<>();
+        Chunk<KopisFacDetail> collect = new Chunk<>();
         for(List<KopisFacDetail> list : items){
 
             List<KopisFacDetail> newList = new ArrayList<>();
@@ -37,9 +40,8 @@ public class ArtFacItemWriter<T> extends JpaItemWriter<List<KopisFacDetail>> {
                 if ( !facIdList.contains(facDetail.getArtFacId())) {
                     newList.add(facDetail);
                 }
-                allList.add(newList);
             }
-           collect.addAll(allList);
+           collect.addAll(newList);
         }
         jpaItemWriter.write(collect);
 
@@ -48,7 +50,7 @@ public class ArtFacItemWriter<T> extends JpaItemWriter<List<KopisFacDetail>> {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        super.afterPropertiesSet();
+        Assert.notNull(jpaItemWriter, "For facility, An entity manager is required");
     }
 
 }

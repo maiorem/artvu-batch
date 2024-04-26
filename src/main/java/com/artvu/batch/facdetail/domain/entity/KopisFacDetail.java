@@ -1,40 +1,24 @@
 package com.artvu.batch.facdetail.domain.entity;
 
 import com.artvu.batch.common.entity.BaseRegDate;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 
-import java.time.LocalDateTime;
-
 @Getter
+@ToString
 @Entity
 @Table(name = "TB_KOPIS_FAC_DETAIL")
 @Comment("[KOPIS] 공연시설상세내용")
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-@IdClass(ArtFacId.class)
 public class KopisFacDetail extends BaseRegDate {
 
     @Id
     @Column(length = 20, name = "ART_FAC_ID")
     @Comment("공연시설ID")
     private String artFacId;
-
-    @Id
-    @Column(name = "REG_DT")
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @Comment("수집일시")
-    private LocalDateTime regDt;
 
     @Column(length = 200, name = "ART_FAC_NM")
     @Comment("공연시설명")

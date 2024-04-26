@@ -65,7 +65,10 @@ public class ArtDetailItemReader implements ItemReader<List<KopisArtDetailRespon
             String xmlResult = response.block();
             assert xmlResult != null;
             JSONObject jsonResult = XML.toJSONObject(xmlResult);
-            KopisArtDetailResponse result = gson.fromJson(jsonResult.toString(), TypeToken.getParameterized(KopisArtDetailResponse.class).getType());
+            KopisArtDetailResponse result = null;
+            if (jsonResult.get("dbs") != null) {
+                result = gson.fromJson(jsonResult.toString(), TypeToken.getParameterized(KopisArtDetailResponse.class).getType());
+            }
             detailList.add(result);
         }
 

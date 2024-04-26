@@ -67,10 +67,13 @@ public class ArtFacItemReader implements ItemReader<List<KopisFacDetailResponse>
             JSONObject jsonResult = XML.toJSONObject(xmlResult);
             KopisFacDetailResponse result = gson.fromJson(jsonResult.toString(), TypeToken.getParameterized(KopisFacDetailResponse.class).getType());
             detailList.add(result);
+
+            log.info("art fac detail info ::" + result.toString());
         }
 
         count++;
         log.info("art FacDetail READER ============================================== ");
+
 
         return count > 1 ? null : detailList;
     }

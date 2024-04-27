@@ -52,7 +52,7 @@ public class ArtDetail {
     @Comment("주관")
     private String organizerNm;
 
-    @Column(length = 4000, name = "SUMMARY")
+    @Column(length = 4000, name = "ART_SUMMARY")
     @Comment("줄거리")
     private String summary;
 

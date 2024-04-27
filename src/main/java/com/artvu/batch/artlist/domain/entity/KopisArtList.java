@@ -1,5 +1,6 @@
 package com.artvu.batch.artlist.domain.entity;
 
+import com.artvu.batch.common.entity.BaseRegDate;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -11,27 +12,19 @@ import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
-@Getter
+@Getter @Setter
 @Entity
 @Table(name = "TB_KOPIS_ART_LIST")
 @Comment("[KOPIS] 공연목록")
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-@IdClass(ArtId.class)
-public class KopisArtList {
+public class KopisArtList extends BaseRegDate {
 
     @Id
     @Column(length = 20, name = "ART_ID")
     @Comment("공연ID")
     private String artId;
-
-    @Id
-    @Column(name = "REG_DT")
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @Comment("수집일시")
-    private LocalDateTime regDt;
 
     @Column(length = 200, name = "ART_NM")
     @Comment("공연명")

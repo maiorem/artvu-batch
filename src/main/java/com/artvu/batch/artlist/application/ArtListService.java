@@ -1,5 +1,6 @@
 package com.artvu.batch.artlist.application;
 
+import com.artvu.batch.artdetail.domain.entity.KopisArtDetail;
 import com.artvu.batch.artlist.domain.entity.KopisArtIntroImgList;
 import com.artvu.batch.artlist.domain.entity.KopisArtList;
 import com.artvu.batch.artlist.infrastructure.repository.KopisArtIntroImgListRepository;
@@ -31,5 +32,9 @@ public class ArtListService {
     @Transactional
     public void ImgSave(KopisArtIntroImgList build) {
         imgListRepository.saveAndFlush(build);
+    }
+
+    public List<KopisArtIntroImgList> findAllByArtDetail(KopisArtDetail artDetail) {
+        return imgListRepository.findAllByArtDetail(artDetail);
     }
 }

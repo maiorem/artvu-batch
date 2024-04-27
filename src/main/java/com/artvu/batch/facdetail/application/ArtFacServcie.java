@@ -30,4 +30,8 @@ public class ArtFacServcie {
         return facIdList;
 
     }
+
+    public KopisFacDetail findByArtFacId(String artFacId) {
+        return facDetailApiRepository.findByArtFacId(artFacId);
+    }
 }

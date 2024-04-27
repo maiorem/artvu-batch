@@ -9,6 +9,9 @@ import com.artvu.batch.artlist.application.*;
 import com.artvu.batch.artlist.presentation.KopisArtListResponse;
 import com.artvu.batch.artdetail.domain.entity.KopisArtDetail;
 import com.artvu.batch.artlist.domain.entity.KopisArtList;
+import com.artvu.batch.artvu.application.DbTransferProcessor;
+import com.artvu.batch.artvu.application.DbTransferWriter;
+import com.artvu.batch.artvu.domain.entity.ArtList;
 import com.artvu.batch.facdetail.application.ArtFacItemProcessor;
 import com.artvu.batch.facdetail.application.ArtFacItemReader;
 import com.artvu.batch.facdetail.application.ArtFacItemWriter;
@@ -20,13 +23,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobScope;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.database.JpaCursorItemReader;
 import org.springframework.batch.item.database.JpaItemWriter;
+import org.springframework.batch.item.database.builder.JpaCursorItemReaderBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -49,13 +54,14 @@ public class ApiBatchConfig {
     private final PlatformTransactionManager transactionManager;
 
     @Bean(name = "artReaderJob")
-    public Job artReaderJob(Step listStep, Step musicalListStep, Step detailStep, Step theaterDataStep){
+    public Job artReaderJob(){
 
         return new JobBuilder("artReaderJob", jobRepository)
-                .start(listStep)
-                .next(musicalListStep)
-                .next(detailStep)
-                .next(theaterDataStep)
+                .start(listStep())
+                .next(musicalListStep())
+                .next(detailStep())
+                .next(theaterDataStep())
+                .next(dbTranferStep())
                 .incrementer(new RunIdIncrementer())
                 .build();
     }
@@ -105,6 +111,23 @@ public class ApiBatchConfig {
                 .reader(facItemReader())
                 .processor(facItemProcessor())
                 .writer(facItemWriter())
+                .allowStartIfComplete(true)
+                .build();
+    }
+
+    // Step 4. best price crawling
+
+
+
+
+    // Step 5 (DB transfer)
+    @Bean
+    public Step dbTranferStep(){
+        return new StepBuilder("dbTranferStep", jobRepository)
+                .<KopisArtList, ArtList>chunk(200, transactionManager)
+                .reader(artListDbTransferReader())
+                .processor(artListDbTransferProcessor())
+                .writer(artListDbTranferWriter())
                 .allowStartIfComplete(true)
                 .build();
     }
@@ -188,7 +211,27 @@ public class ApiBatchConfig {
 
 
     // ============ Step 5. update artvu db  ===========
+    @Bean
+    public JpaCursorItemReader<KopisArtList> artListDbTransferReader(){
+        return new JpaCursorItemReaderBuilder<KopisArtList>()
+                .name("artListDbTransferReader")
+                .entityManagerFactory(entityManager)
+                .queryString("SELECT a FROM KopisArtList a")
+                .build();
 
+    }
+
+    @Bean
+    public DbTransferProcessor artListDbTransferProcessor() {
+        return new DbTransferProcessor();
+    }
+
+    @Bean
+    public DbTransferWriter<ArtList> artListDbTranferWriter(){
+        JpaItemWriter<ArtList> writer = new JpaItemWriter<>();
+        writer.setEntityManagerFactory(entityManager);
+        return new DbTransferWriter<>(writer);
+    }
 
 
 }

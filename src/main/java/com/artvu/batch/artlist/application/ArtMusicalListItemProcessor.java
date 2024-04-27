@@ -1,21 +1,20 @@
 package com.artvu.batch.artlist.application;
 
-import com.artvu.batch.artlist.presentation.KopisArtListResponse;
 import com.artvu.batch.artlist.domain.entity.KopisArtList;
+import com.artvu.batch.artlist.presentation.KopisArtListResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 
 @Slf4j
-public class ArtListItemProcessor implements ItemProcessor<KopisArtListResponse, List<KopisArtList>> {
+public class ArtMusicalListItemProcessor  implements ItemProcessor<KopisArtListResponse, List<KopisArtList>> {
+
 
     @Override
     public List<KopisArtList> process(KopisArtListResponse item) {
 
-        log.info("art LIST PROCESSOR ============================================== ");
+        log.info("art musical LIST PROCESSOR ============================================== ");
 
         return item.getDbs().getDb().stream().map(data -> KopisArtList.builder()
                 .artId(data.getMt20id())

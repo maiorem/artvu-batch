@@ -45,7 +45,7 @@ public class ArtList {
     @Comment("최저가격기준시간")
     private LocalDateTime minPriceRegDt;
 
-    @Column(length = 10, name = "STATUS")
+    @Column(length = 10, name = "ART_STATUS")
     @Comment("공연상태")
     private String status;
 

@@ -17,21 +17,22 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-public class ArtListItemWriter<T> extends JpaItemWriter<List<KopisArtList>> {
+public class ArtMusicalListItemWriter<T> extends JpaItemWriter<List<KopisArtList>> {
+
 
     private JpaItemWriter<KopisArtList> jpaItemWriter;
 
     @Autowired
     private ArtListService artService;
 
-    public ArtListItemWriter(JpaItemWriter<KopisArtList> jpaItemWriter) {
+    public ArtMusicalListItemWriter(JpaItemWriter<KopisArtList> jpaItemWriter) {
         this.jpaItemWriter = jpaItemWriter;
     }
 
     @Override
     @Transactional
     public void write(Chunk<? extends List<KopisArtList>> items) {
-        log.info("art LIST WRITER ================================================");
+        log.info("art musical LIST WRITER ================================================");
 
         LocalDate today = LocalDate.now(ZoneId.of("Asia/Seoul"));
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy.MM.dd");
@@ -60,6 +61,6 @@ public class ArtListItemWriter<T> extends JpaItemWriter<List<KopisArtList>> {
 
     @Override
     public void afterPropertiesSet()  {
-        Assert.notNull(jpaItemWriter, "For art list, An entity manager is required");
+        Assert.notNull(jpaItemWriter, "For art musical list, An entity manager is required");
     }
 }

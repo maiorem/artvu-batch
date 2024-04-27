@@ -29,11 +29,7 @@ public class ArtTime {
     @Comment("공연종료일시")
     private String artEndDt;
 
-    @Column(name = "RUN_TIME")
-    @Comment("런타임")
-    private String runTime;
-
-    @Column(length = 100, name = "ART_TIME")
+    @Column(length = 500, name = "ART_OPEN_TIME")
     @Comment("공연일시")
     private String artTime;
 

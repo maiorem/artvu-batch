@@ -79,7 +79,7 @@ public class ArtFacDetail {
 
     @Column(length = 1, name = "STORE24_YN")
     @Comment("편의점여부")
-    private String Store24Yn;
+    private String store24Yn;
 
     @Column(length = 1, name = "PLAYROOM_YN")
     @Comment("놀이방여부")

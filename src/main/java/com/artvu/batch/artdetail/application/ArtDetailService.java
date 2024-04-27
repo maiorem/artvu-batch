@@ -2,6 +2,7 @@ package com.artvu.batch.artdetail.application;
 
 import com.artvu.batch.artdetail.domain.entity.KopisArtDetail;
 import com.artvu.batch.artdetail.infrastructure.repository.KopisArtDetailApiRepository;
+import com.artvu.batch.artvu.domain.entity.ArtDetail;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,5 +37,9 @@ public class ArtDetailService {
             artId.add(kopisArtDetail.getArtId());
         }
         return artId;
+    }
+
+    public KopisArtDetail findByArtId(String artId) {
+        return detailApiRepository.findByArtId(artId);
     }
 }

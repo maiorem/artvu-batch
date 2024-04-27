@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface KopisArtFacDetailApiRepository extends JpaRepository<KopisFacDetail, String> {
+    KopisFacDetail findByArtFacId(String artFacId);
 }

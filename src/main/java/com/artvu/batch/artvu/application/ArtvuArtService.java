@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -90,4 +91,11 @@ public class ArtvuArtService {
         return artFacDetailRepository.findByArtFacId(facId);
     }
 
+    public Optional<ArtList> findByArtId(String artId) {
+        return artListRepository.findByArtId(artId);
+    }
+
+    public Optional<ArtTime> findByArtlist(ArtList artList) {
+        return timeRepository.findByArtlist(artList);
+    }
 }

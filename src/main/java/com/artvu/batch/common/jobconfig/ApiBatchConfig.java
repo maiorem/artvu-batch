@@ -9,8 +9,10 @@ import com.artvu.batch.artlist.application.*;
 import com.artvu.batch.artlist.presentation.KopisArtListResponse;
 import com.artvu.batch.artdetail.domain.entity.KopisArtDetail;
 import com.artvu.batch.artlist.domain.entity.KopisArtList;
+import com.artvu.batch.artvu.application.ArtvuArtService;
 import com.artvu.batch.artvu.application.DbTransferProcessor;
 import com.artvu.batch.artvu.application.DbTransferWriter;
+import com.artvu.batch.artvu.application.UpdateDataTasklet;
 import com.artvu.batch.artvu.domain.entity.ArtList;
 import com.artvu.batch.facdetail.application.ArtFacItemProcessor;
 import com.artvu.batch.facdetail.application.ArtFacItemReader;
@@ -49,6 +51,8 @@ public class ApiBatchConfig {
 
     private final ArtDetailService artDetailService;
 
+    private final ArtvuArtService artvuArtService;
+
     private final JobRepository jobRepository;
 
     private final PlatformTransactionManager transactionManager;
@@ -62,6 +66,7 @@ public class ApiBatchConfig {
                 .next(detailStep())
                 .next(theaterDataStep())
                 .next(dbTranferStep())
+                .next(updateData())
                 .incrementer(new RunIdIncrementer())
                 .build();
     }
@@ -131,6 +136,15 @@ public class ApiBatchConfig {
                 .allowStartIfComplete(true)
                 .build();
     }
+
+    // Step 6. (Update data for end performs)
+    @Bean
+    public Step updateData() {
+        return new StepBuilder("updateData", jobRepository)
+                .tasklet(new UpdateDataTasklet(artvuArtService), transactionManager)
+                .build();
+    }
+
 
     // ============ Step 1. List =================
     @Bean

@@ -1,11 +1,10 @@
 package com.artvu.batch.facdetail.infrastructure.repository;
 
-import com.artvu.batch.facdetail.domain.entity.ArtFacId;
 import com.artvu.batch.facdetail.domain.entity.KopisFacDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface KopisArtFacDetailApiRepository extends JpaRepository<KopisFacDetail, ArtFacId> {
+public interface KopisArtFacDetailApiRepository extends JpaRepository<KopisFacDetail, String> {
+    KopisFacDetail findByArtFacId(String artFacId);
 }

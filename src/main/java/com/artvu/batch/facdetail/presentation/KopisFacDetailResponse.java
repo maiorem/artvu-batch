@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.List;
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,7 +17,7 @@ public class KopisFacDetailResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     @ToString
-    public class Dbs {
+    public static class Dbs {
 
         private Db db;
 

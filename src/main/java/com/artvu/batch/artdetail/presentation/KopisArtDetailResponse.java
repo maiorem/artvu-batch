@@ -19,7 +19,7 @@ public class KopisArtDetailResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     @ToString
-    public class Dbs {
+    public static class Dbs {
 
         private Db db;
 
@@ -85,14 +85,14 @@ public class KopisArtDetailResponse {
 
             private String dtguidance; //공연시각
 
-            private List<Styurls> styurls; //공연소개이미지목록
+            private Styurls styurls; //공연소개이미지목록
 
             @Getter
             @ToString
             @NoArgsConstructor
             @AllArgsConstructor
-            public class Styurls {
-                private String styurl;
+            public static class Styurls<T> {
+                private T styurl;
             }
 
         }

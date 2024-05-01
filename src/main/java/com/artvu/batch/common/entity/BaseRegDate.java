@@ -25,9 +25,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseRegDate {
 
-    @Id
     @Column(name = "REG_DT")
-    @NotNull
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @CreatedDate

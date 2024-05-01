@@ -1,7 +1,9 @@
 package com.artvu.batch.artdetail.application;
 
-import com.artvu.batch.artlist.domain.entity.KopisArtList;
-import com.artvu.batch.artlist.infrastructure.repository.KopisArtListApiRepository;
+import com.artvu.batch.artdetail.domain.entity.KopisArtDetail;
+import com.artvu.batch.artdetail.infrastructure.repository.KopisArtDetailApiRepository;
+import com.artvu.batch.artvu.domain.entity.ArtDetail;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +14,32 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArtDetailService {
 
-    private final KopisArtListApiRepository listApiRepository;
+    private final KopisArtDetailApiRepository detailApiRepository;
+
+    public List<String> artFacIdList() {
+        List<KopisArtDetail> list = detailApiRepository.findAll();
+        List<String> facIdList = new ArrayList<>();
+        for (KopisArtDetail kopisArtDetail : list) {
+            facIdList.add(kopisArtDetail.getArtFacId());
+        }
+        return facIdList;
+    }
+
+    @Transactional
+    public void saveData(KopisArtDetail build) {
+        detailApiRepository.saveAndFlush(build);
+    }
 
     public List<String> artIdList() {
-
-        List<KopisArtList> artList = listApiRepository.findAll();
-        List<String> kopisArtIdList = new ArrayList<>();
-        for (KopisArtList kopisArt : artList) {
-            kopisArtIdList.add(kopisArt.getArtId());
+        List<KopisArtDetail> all = detailApiRepository.findAll();
+        List<String> artId = new ArrayList<>();
+        for (KopisArtDetail kopisArtDetail : all) {
+            artId.add(kopisArtDetail.getArtId());
         }
-        return kopisArtIdList;
+        return artId;
+    }
+
+    public KopisArtDetail findByArtId(String artId) {
+        return detailApiRepository.findByArtId(artId);
     }
 }

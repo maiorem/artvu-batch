@@ -1,8 +1,10 @@
 package com.artvu.batch.artdetail.application;
 
 import com.artvu.batch.artdetail.presentation.KopisArtDetailResponse;
+import com.artvu.batch.artlist.application.ArtListService;
 import com.artvu.batch.common.constants.Constants;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -22,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArtDetailItemReader implements ItemReader<List<KopisArtDetailResponse>> {
 
-    private final ArtDetailService artDetailService;
+    private final ArtListService artService;
 
     @Value("${spring.open-api.secretKey}")
     private String secretKey;
@@ -32,7 +34,7 @@ public class ArtDetailItemReader implements ItemReader<List<KopisArtDetailRespon
     @Override
     public List<KopisArtDetailResponse> read() throws Exception {
 
-        List<String> kopisArtIdList = artDetailService.artIdList();
+        List<String> kopisArtIdList = artService.artIdList();
         List<KopisArtDetailResponse> detailList = new ArrayList<>();
         Gson gson = new Gson();
 
@@ -61,14 +63,17 @@ public class ArtDetailItemReader implements ItemReader<List<KopisArtDetailRespon
                     .bodyToMono(String.class)
                     .log();
             String xmlResult = response.block();
+            assert xmlResult != null;
             JSONObject jsonResult = XML.toJSONObject(xmlResult);
-            KopisArtDetailResponse result = gson.fromJson(jsonResult.toString(), KopisArtDetailResponse.class);
+            KopisArtDetailResponse result = null;
+            if (jsonResult.get("dbs") != null) {
+                result = gson.fromJson(jsonResult.toString(), TypeToken.getParameterized(KopisArtDetailResponse.class).getType());
+            }
             detailList.add(result);
         }
 
         count++;
         log.info("art DETAIL READER ============================================== ");
-        log.info("art detail info ::" + detailList);
 
         return count > 1 ? null : detailList;
     }

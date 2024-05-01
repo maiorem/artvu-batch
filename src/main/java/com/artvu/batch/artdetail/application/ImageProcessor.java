@@ -14,6 +14,7 @@ public class ImageProcessor {
 
     public static String downloader(String urlPath, ImageType type) {
 
+        String returnPath = "";
         String filePath = "";
         try {
             URL url = new URL(urlPath);
@@ -24,15 +25,14 @@ public class ImageProcessor {
             String fileName = urlPath.substring(urlPath.lastIndexOf("/")+1);
             //업로드 경로
             if (type == ImageType.INTRO) {
-                filePath = "/public/attech/images/intro/" + fileName;
+                filePath = "/app/back-batch/attech/images/intro" + fileName;
+                returnPath = "/attech/images/intro/" + fileName;
             } else {
-                filePath = "/public/attech/images/poster/" + fileName;
+                filePath = "/app/back-batch/attech/images/poster" + fileName;
+                returnPath = "/attech/images/poster/" + fileName;
             }
             BufferedImage image = ImageIO.read(url);
             File file = new File(filePath);
-            if (!file.exists()) {
-                file.mkdirs();
-            }
             ImageIO.write(image, extension, file);
             log.info("file download and upload complete");
 
@@ -41,7 +41,7 @@ public class ImageProcessor {
             log.error("file upload error", e);
         }
 
-        return filePath;
+        return returnPath;
     }
 
 }

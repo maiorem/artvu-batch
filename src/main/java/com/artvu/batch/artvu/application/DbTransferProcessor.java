@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -161,6 +162,19 @@ public class DbTransferProcessor implements ItemProcessor<KopisArtList, ArtList>
                             .build()
             );
 
+        } else {
+            LocalDate today = LocalDate.now(ZoneId.of("Asia/Seoul"));
+            DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+
+            if (today.isAfter(LocalDate.parse(item.getArtStrDt(), dateFormat) )) {
+                Optional<ArtList> art = artvuArtService.findByArtId(item.getArtId());
+                art.ifPresent(artItem -> artItem.setStatus("공연중"));
+            }
+
+            if (today.isAfter(LocalDate.parse(item.getArtEndDt(), dateFormat) )) {
+                Optional<ArtList> art = artvuArtService.findByArtId(item.getArtId());
+                art.ifPresent(artItem -> artItem.setStatus("공연종료"));
+            }
         }
 
 

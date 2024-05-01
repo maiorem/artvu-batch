@@ -38,6 +38,7 @@ public class ArtDetailItemProcessor  implements ItemProcessor<List<KopisArtDetai
         for (KopisArtDetailResponse response : items) {
             if(!artIdList.contains(response.getDbs().getDb().getMt20id())) {
 
+                String posterUrl = ImageProcessor.downloader(response.getDbs().getDb().getPoster(), ImageType.POSTER);
 
                 KopisArtDetail build = KopisArtDetail.builder()
                         .artId(response.getDbs().getDb().getMt20id())
@@ -55,7 +56,7 @@ public class ArtDetailItemProcessor  implements ItemProcessor<List<KopisArtDetai
                         .sponsorNm(response.getDbs().getDb().getEntrpsnmH())
                         .organizerNm(response.getDbs().getDb().getEntrpsnmS())
                         .price(response.getDbs().getDb().getPcseguidance())
-                        .posterImgUrl(response.getDbs().getDb().getPoster())
+                        .posterImgUrl(posterUrl)
                         .summary(response.getDbs().getDb().getSty())
                         .genreNm(response.getDbs().getDb().getGenrenm())
                         .status(response.getDbs().getDb().getPrfstate())
@@ -73,26 +74,19 @@ public class ArtDetailItemProcessor  implements ItemProcessor<List<KopisArtDetai
                 log.info("detail info : {}", build.toString());
                 detailService.saveData(build);
 
+                // 소개 이미지 저장 ( 단건 or 다건 )
                 Object ob = response.getDbs().getDb().getStyurls().getStyurl();
-
-                if (ob.getClass().isArray()) {
-                    List<?> urls = Arrays.asList((Object[]) ob);
-                    for (Object url : urls) {
-                        KopisArtIntroImgList img = KopisArtIntroImgList.builder()
-                                .artDetail(build)
-                                .introductImgUrl(String.valueOf(url))
-                                .build();
-                        artListService.ImgSave(img);
-
-                    }
-                } else {
+                String introImages = String.valueOf(ob);
+                introImages = introImages.replaceAll("\\[", "").replaceAll("\\]", "");
+                String[] introArray = introImages.split(",");
+                for (String image : introArray) {
+                    String intro = ImageProcessor.downloader(image, ImageType.INTRO);
                     KopisArtIntroImgList img = KopisArtIntroImgList.builder()
                             .artDetail(build)
-                            .introductImgUrl(String.valueOf(ob))
+                            .introductImgUrl(intro)
                             .build();
                     artListService.ImgSave(img);
                 }
-
                 detailList.add(build);
 
             }

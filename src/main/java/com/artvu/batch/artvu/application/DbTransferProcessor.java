@@ -53,7 +53,9 @@ public class DbTransferProcessor implements ItemProcessor<KopisArtList, ArtList>
         int orgPrice = 0;
         if ( !detail.getPrice().equals("전석무료") && !detail.getPrice().isBlank() && !detail.getPrice().isEmpty() && detail.getPrice() != null) {
             String firstPrice = detail.getPrice().split(" ")[1].replace(",","").replace("원", "");
-            orgPrice = Integer.parseInt(firstPrice);
+            if (isNumberic(firstPrice)) {
+                orgPrice = Integer.parseInt(firstPrice);
+            }
         }
 
 
@@ -181,5 +183,10 @@ public class DbTransferProcessor implements ItemProcessor<KopisArtList, ArtList>
 
 
         return artList;
+    }
+
+
+    private boolean isNumberic(String str) {
+        return str.chars().allMatch(Character::isDigit);
     }
 }

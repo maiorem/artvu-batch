@@ -4,6 +4,7 @@ import com.artvu.batch.artlist.presentation.KopisArtListResponse;
 import com.artvu.batch.common.constants.Constants;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -34,10 +35,10 @@ public class ArtListItemReader implements ItemReader<KopisArtListResponse> {
     public KopisArtListResponse read() throws JsonProcessingException {
 
         String current_page = String.valueOf(cpage++);
-        String ROWS = "200";
+        String ROWS = "500";
 
         LocalDateTime performStrDt = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        LocalDateTime performEndDt = performStrDt.plusMonths(1);
+        LocalDateTime performEndDt = performStrDt.plusYears(1);
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd");
 
         String strDt = performStrDt.format(dateFormat);
@@ -74,12 +75,14 @@ public class ArtListItemReader implements ItemReader<KopisArtListResponse> {
                 .log();
 
         String xmlResult = response.block();
+        assert xmlResult != null;
         JSONObject jsonResult = XML.toJSONObject(xmlResult);
-        KopisArtListResponse result = gson.fromJson(jsonResult.toString(), KopisArtListResponse.class);
-
+        KopisArtListResponse result = null;
+        if (jsonResult.get("dbs") != null && !StringUtils.isEmpty(jsonResult.get("dbs").toString())) {
+            result = gson.fromJson(jsonResult.toString(), KopisArtListResponse.class);
+        }
         count++;
         log.info("art LIST READER ============================================== ");
-        log.info("art list info ::"+result.toString());
 
         return count > 1 ? null : result;
     }

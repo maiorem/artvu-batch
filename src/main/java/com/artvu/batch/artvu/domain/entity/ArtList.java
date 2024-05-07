@@ -57,6 +57,10 @@ public class ArtList {
     @Comment("공연관람연령")
     private String artShowAge;
 
+    @Column(length = 45, name = "ART_CATE_NM")
+    @Comment("공연관람연령")
+    private String artCateNm;
+
     @Builder.Default
     @OneToMany(mappedBy = "artList")
     private List<ArtGenreMppg> artGenreMppgs = new ArrayList<>();

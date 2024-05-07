@@ -36,63 +36,64 @@ public class ArtDetailItemProcessor  implements ItemProcessor<List<KopisArtDetai
         List<KopisArtDetail> detailList = new ArrayList<>();
 
         for (KopisArtDetailResponse response : items) {
-            if(!artIdList.contains(response.getDbs().getDb().getMt20id())) {
+            if (response != null) {
+                if (!artIdList.contains(response.getDbs().getDb().getMt20id())) {
 
-                String posterUrl = ImageProcessor.downloader(response.getDbs().getDb().getPoster(), ImageType.POSTER);
+                    String posterUrl = ImageProcessor.downloader(response.getDbs().getDb().getPoster(), ImageType.POSTER);
 
-                KopisArtDetail build = KopisArtDetail.builder()
-                        .artId(response.getDbs().getDb().getMt20id())
-                        .artFacId(response.getDbs().getDb().getMt10id())
-                        .artNm(response.getDbs().getDb().getPrfnm())
-                        .artStrDt(response.getDbs().getDb().getPrfpdfrom())
-                        .artEndDt(response.getDbs().getDb().getPrfpdto())
-                        .artActors(response.getDbs().getDb().getPrfcast())
-                        .artStaff(response.getDbs().getDb().getPrfcrew())
-                        .artFacNm(response.getDbs().getDb().getFcltynm())
-                        .artRuntime(response.getDbs().getDb().getPrfruntime())
-                        .artShowAge(response.getDbs().getDb().getPrfage())
-                        .prodCompNm(response.getDbs().getDb().getEntrpsnmP())
-                        .agencyNm(response.getDbs().getDb().getEntrpsnmA())
-                        .sponsorNm(response.getDbs().getDb().getEntrpsnmH())
-                        .organizerNm(response.getDbs().getDb().getEntrpsnmS())
-                        .price(response.getDbs().getDb().getPcseguidance())
-                        .posterImgUrl(posterUrl)
-                        .summary(response.getDbs().getDb().getSty())
-                        .genreNm(response.getDbs().getDb().getGenrenm())
-                        .status(response.getDbs().getDb().getPrfstate())
-                        .openrunYn(response.getDbs().getDb().getOpenrun())
-                        .visitKorYn(response.getDbs().getDb().getVisit())
-                        .childYn(response.getDbs().getDb().getChild())
-                        .daehakroYn(response.getDbs().getDb().getDaehakro())
-                        .festivalYn(response.getDbs().getDb().getFestival())
-                        .musicalLicenseYn(response.getDbs().getDb().getMusicallicense())
-                        .musicalCreateYn(response.getDbs().getDb().getMusicalcreate())
-                        .lastModDt(response.getDbs().getDb().getUpdatedate())
-                        .artTime(response.getDbs().getDb().getDtguidance())
-                        .build();
-
-                log.info("detail info : {}", build.toString());
-                detailService.saveData(build);
-
-                // 소개 이미지 저장 ( 단건 or 다건 )
-                Object ob = response.getDbs().getDb().getStyurls().getStyurl();
-                String introImages = String.valueOf(ob);
-                introImages = introImages.replaceAll("\\[", "").replaceAll("\\]", "");
-                String[] introArray = introImages.split(",");
-                for (String image : introArray) {
-                    String intro = ImageProcessor.downloader(image, ImageType.INTRO);
-                    KopisArtIntroImgList img = KopisArtIntroImgList.builder()
-                            .artDetail(build)
-                            .introductImgUrl(intro)
+                    KopisArtDetail build = KopisArtDetail.builder()
+                            .artId(response.getDbs().getDb().getMt20id())
+                            .artFacId(response.getDbs().getDb().getMt10id())
+                            .artNm(response.getDbs().getDb().getPrfnm())
+                            .artStrDt(response.getDbs().getDb().getPrfpdfrom())
+                            .artEndDt(response.getDbs().getDb().getPrfpdto())
+                            .artActors(response.getDbs().getDb().getPrfcast())
+                            .artStaff(response.getDbs().getDb().getPrfcrew())
+                            .artFacNm(response.getDbs().getDb().getFcltynm())
+                            .artRuntime(response.getDbs().getDb().getPrfruntime())
+                            .artShowAge(response.getDbs().getDb().getPrfage())
+                            .prodCompNm(response.getDbs().getDb().getEntrpsnmP())
+                            .agencyNm(response.getDbs().getDb().getEntrpsnmA())
+                            .sponsorNm(response.getDbs().getDb().getEntrpsnmH())
+                            .organizerNm(response.getDbs().getDb().getEntrpsnmS())
+                            .price(response.getDbs().getDb().getPcseguidance())
+                            .posterImgUrl(posterUrl)
+                            .summary(response.getDbs().getDb().getSty())
+                            .genreNm(response.getDbs().getDb().getGenrenm())
+                            .status(response.getDbs().getDb().getPrfstate())
+                            .openrunYn(response.getDbs().getDb().getOpenrun())
+                            .visitKorYn(response.getDbs().getDb().getVisit())
+                            .childYn(response.getDbs().getDb().getChild())
+                            .daehakroYn(response.getDbs().getDb().getDaehakro())
+                            .festivalYn(response.getDbs().getDb().getFestival())
+                            .musicalLicenseYn(response.getDbs().getDb().getMusicallicense())
+                            .musicalCreateYn(response.getDbs().getDb().getMusicalcreate())
+                            .lastModDt(response.getDbs().getDb().getUpdatedate())
+                            .artTime(response.getDbs().getDb().getDtguidance())
                             .build();
-                    artListService.ImgSave(img);
+
+                    log.info("detail info : {}", build.toString());
+                    detailService.saveData(build);
+
+                    // 소개 이미지 저장 ( 단건 or 다건 )
+                    Object ob = response.getDbs().getDb().getStyurls().getStyurl();
+                    String introImages = String.valueOf(ob);
+                    introImages = introImages.replaceAll("\\[", "").replaceAll("\\]", "");
+                    String[] introArray = introImages.split(",");
+                    for (String image : introArray) {
+                        String intro = ImageProcessor.downloader(image, ImageType.INTRO);
+                        KopisArtIntroImgList img = KopisArtIntroImgList.builder()
+                                .artDetail(build)
+                                .introductImgUrl(intro)
+                                .build();
+                        artListService.ImgSave(img);
+                    }
+                    detailList.add(build);
+
                 }
-                detailList.add(build);
 
             }
-
         }
-
         return detailList;
 
     }

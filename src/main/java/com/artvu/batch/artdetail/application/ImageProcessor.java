@@ -33,7 +33,9 @@ public class ImageProcessor {
             }
             BufferedImage image = ImageIO.read(url);
             File file = new File(filePath);
-            ImageIO.write(image, extension, file);
+            if (image != null) {
+                ImageIO.write(image, extension, file);
+            }
             log.info("file download and upload complete");
 
 

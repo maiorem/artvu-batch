@@ -135,6 +135,7 @@ public class DbTransferProcessor implements ItemProcessor<KopisArtList, ArtList>
                     .minPriceRegDt(minPriceRegDt)
                     .status(item.getStatus())
                     .artShowAge(detail.getArtShowAge())
+                    .artCateNm(item.getGenreNm())
                     .areaCode(artvuArtService.findAreaByNm(facility.getArtFacAddr().split(" ")[0]) == null ? artvuArtService.findAreaByNm("강원도") : artvuArtService.findAreaByNm(facility.getArtFacAddr().split(" ")[0])  )
                     .build();
             artvuArtService.listSave(artList);

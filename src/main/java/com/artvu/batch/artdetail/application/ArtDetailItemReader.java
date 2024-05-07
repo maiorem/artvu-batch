@@ -5,6 +5,7 @@ import com.artvu.batch.artlist.application.ArtListService;
 import com.artvu.batch.common.constants.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -66,7 +67,7 @@ public class ArtDetailItemReader implements ItemReader<List<KopisArtDetailRespon
             assert xmlResult != null;
             JSONObject jsonResult = XML.toJSONObject(xmlResult);
             KopisArtDetailResponse result = null;
-            if (jsonResult.get("dbs") != null) {
+            if (jsonResult.get("dbs") != null && !StringUtils.isEmpty(jsonResult.get("dbs").toString())) {
                 result = gson.fromJson(jsonResult.toString(), TypeToken.getParameterized(KopisArtDetailResponse.class).getType());
             }
             detailList.add(result);

@@ -33,7 +33,9 @@ public class ImageProcessor {
             }
             BufferedImage image;
             try {
-                 image = ImageIO.read(url);
+                image = ImageIO.read(url);
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                image = null;
             } catch (IOException ex) {
                 image = null;
             }

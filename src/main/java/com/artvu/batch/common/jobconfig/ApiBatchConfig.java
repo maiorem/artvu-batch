@@ -142,6 +142,7 @@ public class ApiBatchConfig {
     public Step updateData() {
         return new StepBuilder("updateData", jobRepository)
                 .tasklet(new UpdateDataTasklet(artvuArtService), transactionManager)
+                .allowStartIfComplete(true)
                 .build();
     }
 

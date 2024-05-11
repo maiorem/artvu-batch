@@ -25,10 +25,10 @@ public class ImageProcessor {
             String fileName = urlPath.substring(urlPath.lastIndexOf("/")+1);
             //업로드 경로
             if (type == ImageType.INTRO) {
-                filePath = "/app/back-batch/attech/images/intro" + fileName;
+                filePath = "/app/back-batch/attech/images/intro/" + fileName;
                 returnPath = "/attech/images/intro/" + fileName;
             } else {
-                filePath = "/app/back-batch/attech/images/poster" + fileName;
+                filePath = "/app/back-batch/attech/images/poster/" + fileName;
                 returnPath = "/attech/images/poster/" + fileName;
             }
             BufferedImage image = ImageIO.read(url);

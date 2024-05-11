@@ -24,4 +24,13 @@ public class GenreList {
     @Comment("장르명")
     private String artGenreNm;
 
+
+    @Column(name = "ART_GENRE_ORD_NO")
+    @Comment("장르순서")
+    private int artGenreOrdNo;
+
+    @Column(length = 200, name = "ART_GENRE_IMG_URL")
+    @Comment("장르이미지URL")
+    private int artGenreImgUrl;
+
 }

@@ -31,7 +31,12 @@ public class ImageProcessor {
                 filePath = "/app/back-batch/attech/images/poster/" + fileName;
                 returnPath = "/attech/images/poster/" + fileName;
             }
-            BufferedImage image = ImageIO.read(url);
+            BufferedImage image;
+            try {
+                 image = ImageIO.read(url);
+            } catch (IOException ex) {
+                image = null;
+            }
             File file = new File(filePath);
             if (image != null) {
                 ImageIO.write(image, extension, file);

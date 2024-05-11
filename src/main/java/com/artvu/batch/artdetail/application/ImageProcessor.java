@@ -36,14 +36,17 @@ public class ImageProcessor {
                 image = ImageIO.read(url);
             } catch (ArrayIndexOutOfBoundsException ex) {
                 image = null;
+                log.info("file download and upload fail");
             } catch (IOException ex) {
                 image = null;
+                log.info("file download and upload fail");
             }
             File file = new File(filePath);
             if (image != null) {
                 ImageIO.write(image, extension, file);
+                log.info("file download and upload complete");
             }
-            log.info("file download and upload complete");
+
 
 
         } catch (IOException e) {

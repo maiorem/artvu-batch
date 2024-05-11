@@ -53,11 +53,13 @@ public class DbTransferProcessor implements ItemProcessor<KopisArtList, ArtList>
         int orgPrice = 0;
         if ( !detail.getPrice().equals("전석무료") && !detail.getPrice().isBlank() && !detail.getPrice().isEmpty() && detail.getPrice() != null) {
             String firstPrice = detail.getPrice().split(" ")[1].replace(",","").replace("원", "");
-            orgPrice = Integer.parseInt(firstPrice);
+            if (isNumberic(firstPrice)) {
+                orgPrice = Integer.parseInt(firstPrice);
+            }
         }
 
 
-        int minPrice = orgPrice;
+        int minPrice = 0;
         LocalDateTime minPriceRegDt = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         if (crawlDataOptinal.isPresent()) {
             minPrice = crawlDataOptinal.get().getArtMinPrice();
@@ -72,7 +74,7 @@ public class DbTransferProcessor implements ItemProcessor<KopisArtList, ArtList>
             facDetail = ArtFacDetail.builder()
                     .artFacId(facility.getArtFacId())
                     .artFacNm(facility.getArtFacNm())
-                    .cityNm(facility.getArtFacAddr().split(" ")[0])
+                    .cityNm(item.getArtAreaNm())
                     .countyNm(facility.getArtFacAddr().split(" ")[1])
                     .hallCnt(facility.getHallCnt())
                     .artFacQuality(facility.getArtFacQuality())
@@ -133,7 +135,8 @@ public class DbTransferProcessor implements ItemProcessor<KopisArtList, ArtList>
                     .minPriceRegDt(minPriceRegDt)
                     .status(item.getStatus())
                     .artShowAge(detail.getArtShowAge())
-                    .areaCode(artvuArtService.findAreaByNm(facility.getArtFacAddr().split(" ")[0]) == null ? artvuArtService.findAreaByNm("강원도") : artvuArtService.findAreaByNm(facility.getArtFacAddr().split(" ")[0])  )
+                    .artCateNm(item.getGenreNm())
+                    .areaCode(artvuArtService.findAreaByNm(item.getArtAreaNm()) == null ? artvuArtService.findAreaByNm("강원도") : artvuArtService.findAreaByNm(item.getArtAreaNm())  )
                     .build();
             artvuArtService.listSave(artList);
 
@@ -181,5 +184,10 @@ public class DbTransferProcessor implements ItemProcessor<KopisArtList, ArtList>
 
 
         return artList;
+    }
+
+
+    private boolean isNumberic(String str) {
+        return str.chars().allMatch(Character::isDigit);
     }
 }

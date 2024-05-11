@@ -25,16 +25,28 @@ public class ImageProcessor {
             String fileName = urlPath.substring(urlPath.lastIndexOf("/")+1);
             //업로드 경로
             if (type == ImageType.INTRO) {
-                filePath = "/app/back-batch/attech/images/intro" + fileName;
+                filePath = "/app/back-batch/attech/images/intro/" + fileName;
                 returnPath = "/attech/images/intro/" + fileName;
             } else {
-                filePath = "/app/back-batch/attech/images/poster" + fileName;
+                filePath = "/app/back-batch/attech/images/poster/" + fileName;
                 returnPath = "/attech/images/poster/" + fileName;
             }
-            BufferedImage image = ImageIO.read(url);
+            BufferedImage image;
+            try {
+                image = ImageIO.read(url);
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                image = null;
+                log.info("file download and upload fail");
+            } catch (IOException ex) {
+                image = null;
+                log.info("file download and upload fail");
+            }
             File file = new File(filePath);
-            ImageIO.write(image, extension, file);
-            log.info("file download and upload complete");
+            if (image != null) {
+                ImageIO.write(image, extension, file);
+                log.info("file download and upload complete");
+            }
+
 
 
         } catch (IOException e) {

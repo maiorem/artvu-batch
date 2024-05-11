@@ -27,4 +27,8 @@ public class ArtArea {
     @Comment("지역명")
     private String areaNm;
 
+    @Column(name = "AREA_ORD_NO")
+    @Comment("지역순서")
+    private int areaOrdNo;
+
 }

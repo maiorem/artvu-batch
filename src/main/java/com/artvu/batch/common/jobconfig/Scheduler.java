@@ -13,6 +13,11 @@ import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+
 
 @Slf4j
 @Component
@@ -26,8 +31,9 @@ public class Scheduler {
     // 매일 자정
     @Scheduled(cron = "0 0 0 * * *")
     public void dataScheduling() throws JobInstanceAlreadyExistsException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException, JobInstanceAlreadyCompleteException {
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         JobParameters parameters = new JobParametersBuilder()
-                .addString("jobName", "artReaderJob")
+                .addString("jobName", "artJob-"+now)
                 .toJobParameters();
         jobLauncher.run(config.artReaderJob(), parameters);
     }

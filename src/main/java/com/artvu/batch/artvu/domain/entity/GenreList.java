@@ -31,6 +31,6 @@ public class GenreList {
 
     @Column(length = 200, name = "ART_GENRE_IMG_URL")
     @Comment("장르이미지URL")
-    private int artGenreImgUrl;
+    private String artGenreImgUrl;
 
 }

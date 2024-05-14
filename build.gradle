@@ -58,6 +58,9 @@ dependencies {
     implementation group: 'com.twelvemonkeys.imageio', name: 'imageio-core', version: '3.10.1'
     implementation group: 'com.twelvemonkeys.imageio', name: 'imageio-tiff', version: '3.10.1'
 
+    //maria db
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.batch:spring-batch-test'
 }

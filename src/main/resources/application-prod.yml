@@ -1,16 +1,16 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mariadb://${DB_URL}:${DB_PORT}/${DB_NAME}
-    username: ${DB_USER_NAME}
-    password: ${DB_PASSWORD}
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://100.100.30.153:23306/artvu
+    username: appartvu
+    password: Ra$5Je23
 
   jpa:
     properties:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: ${DDL_AUTO}
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true

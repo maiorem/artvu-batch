@@ -1,4 +1,4 @@
 spring:
   profiles:
     #    active: ${PROFILE}
-    active: dev
+    active: prod

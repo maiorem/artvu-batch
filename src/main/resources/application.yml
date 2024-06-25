@@ -1,4 +1,5 @@
+server:
+  port: 8181
 spring:
   profiles:
-    #    active: ${PROFILE}
-    active: dev
+    active: ${PROFILE}

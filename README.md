@@ -1,6 +1,11 @@
 # Artvu Back Batch
 아트뷰 배치 저장소
 
+### 사용 기술
+**Language** : Java        
+**Batch Framework** : Spring Batch        
+**DB** : MariaDB, JPA       
+
 ### 백엔드 소스
 https://github.com/maiorem/artvu-be
 
